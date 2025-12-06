@@ -1,5 +1,6 @@
 package data;
 
+import engine.AgentManager;
 import engine.EnvironmentManager;
 import engine.Utility;
 
@@ -16,6 +17,8 @@ public class CognitiveAgent extends Agent {
         if (treasure != null) {
             inform(treasure); // Transmet les positions au cognitif
             moveToTreasure(treasure, environmentManager, environment);
+        } else {
+            randomMove(environmentManager, environment);
         }
     }
 
@@ -30,9 +33,13 @@ public class CognitiveAgent extends Agent {
     public void moveToTreasure(Treasure treasure, EnvironmentManager environmentManager, Environment environment) {
         if (treasure.isCollected()){
 //            goToQG();
-            treasure = null;
+            for(AgentManager ag : environmentManager.getExplorerManagers()){
+                if(this.equals(ag.getAgent())){
+                    ag.setTreasure(null);
+                    break;
+                }
+            }
         }
-
 
         if (treasure == null) {
             System.out.println("Aucun trésor assigné.");
@@ -190,7 +197,4 @@ public class CognitiveAgent extends Agent {
     private boolean isValidMove(int line, int column) {
         return !(Utility.isBlockOutOfMap(column, line));
     }
-
-
-
 }

@@ -10,6 +10,7 @@ public abstract class Agent extends EnvironmentElement {
     protected int health;
     protected int strength;
 
+
     public Agent(int health, int strength) {
         super();
         this.health = health;
@@ -52,4 +53,24 @@ public abstract class Agent extends EnvironmentElement {
     abstract public void process(Treasure treasure, EnvironmentManager environmentManager, Environment environment);
 
     public abstract int getTypeAgent();
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        Agent other = (Agent) obj;
+
+        // Comparaison des champs
+        if (this.health != other.health) return false;
+        if (this.strength != other.strength) return false;
+        if (this.getTypeAgent() != other.getTypeAgent()) return false;
+
+        if (this.getBlock() == null && other.getBlock() != null) return false;
+        if (this.getBlock() != null && !this.getBlock().equals(other.getBlock())) return false;
+
+        return true;
+    }
+
 }

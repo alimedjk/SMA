@@ -17,13 +17,13 @@ public class GameConfig {
     public static final int NbRounds = 5;
 
     // Constantes pour gérer le nombre d'explorateurs en tout genre
-    public static final int NB_COMMUNICANTS = 3;
+    public static final int NB_COMMUNICANTS = 6;
 
-    public static final int NB_REACTIFS = 5;
+    public static final int NB_REACTIFS = 4;
 
     public static final int NB_COGNITIFS = 5;
     public static final int NB_GAME_ROUNDS = 300;
 
-    public static final int NB_ANIMALS = 20;
+    public static final int NB_ANIMALS = 10;
 
 }

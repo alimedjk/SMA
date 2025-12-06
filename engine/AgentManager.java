@@ -3,12 +3,16 @@ package engine;
 import data.*;
 
 public class AgentManager extends Thread {
+    public void setAgent(Agent agent) {
+        this.agent = agent;
+    }
+
     private Agent agent;
 
     private Environment environment;
 
     private EnvironmentManager environmentManager;
-    private Treasure treasure;
+    protected Treasure treasure;
 
 
     private boolean running = true;

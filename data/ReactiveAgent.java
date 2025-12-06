@@ -21,7 +21,7 @@ public class ReactiveAgent extends Agent {
         return Agent.REACTIVE_AGENT;
     }
 
-    public void randomMove(EnvironmentManager environmentManager, Environment environment) {
+    private void randomMove(EnvironmentManager environmentManager, Environment environment) {
         Block currentBlock = this.getBlock();
         int newLine = currentBlock.getLine();
         int newColumn = currentBlock.getColumn();
