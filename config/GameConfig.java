@@ -5,6 +5,9 @@ public class GameConfig {
     public static final int WINDOW_HEIGHT = 800;
 
     public static final int BLOCK_SIZE = 50;
+    public static final int NB_ZONE = 16;
+    public static final int NB_ZONE_ROW = 4;
+
 
     public static final int LINE_COUNT = WINDOW_HEIGHT / BLOCK_SIZE;
     public static final int COLUMN_COUNT = WINDOW_WIDTH / BLOCK_SIZE;
@@ -18,7 +21,9 @@ public class GameConfig {
 
     public static final int NB_REACTIFS = 5;
 
-    public static final int NB_COGNITIFS = 3;
+    public static final int NB_COGNITIFS = 5;
     public static final int NB_GAME_ROUNDS = 300;
+
+    public static final int NB_ANIMALS = 20;
 
 }

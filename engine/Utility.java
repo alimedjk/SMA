@@ -101,6 +101,15 @@ public class Utility {
 
     }
 
+    public static boolean isTreasureByBlock(Block block, Environment environment){
+        EnvironmentElement element = getElementFromBlock(environment, block);
+        if (element instanceof Treasure){
+            return true;
+        }
+        return false;
+
+    }
+
     public static boolean isAnimalByBlock(Block block, Environment environment){
         EnvironmentElement element = getElementFromBlock(environment, block);
         return element instanceof Animal;
@@ -228,6 +237,30 @@ public class Utility {
 
         }
         return false;
+
+    }
+
+    public static ArrayList<Integer> getZoneLibre(Environment environment){
+        ArrayList<Integer> zoneLibres = new ArrayList<>();
+        for(int i=1; i<Environment.NUM_BLOCKS_PER_ZONE*4; i++){
+            int row = (i/4) * 4;
+            int column = (i%4) * 4;
+            boolean isLibre = true;
+            for(int j = row; j< row + 4; j++){
+                for(int k = column; k< column + 4; k++){
+                    ArrayList<Agent> agents = environment.getAgents();
+                    for (Agent agent : agents){
+                        if(agent instanceof CommunicatingAgent communicatingAgent && agent.getBlock().equals(new Block(j,k))){
+                            isLibre = false;
+                        }
+                    }
+                }
+            }
+            if(isLibre){
+                zoneLibres.add(i);
+            }
+        }
+        return zoneLibres;
 
     }
 

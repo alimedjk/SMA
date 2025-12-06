@@ -1,7 +1,7 @@
 package data;
 
 public class EnvironmentElement {
-    private Block block;
+    protected Block block;
 
     public EnvironmentElement(Block block){
         this.block = block;

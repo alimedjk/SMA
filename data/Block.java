@@ -44,6 +44,7 @@ public class Block {
         return isObstacle;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if(obj == this) {
             return true;
@@ -56,6 +57,8 @@ public class Block {
 
         return objPos.getLine() == this.line && objPos.getColumn() == this.column;
     }
+
+
 
     @Override
     public String toString() {

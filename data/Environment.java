@@ -99,6 +99,16 @@ public class Environment {
         return obstacles;
     }
 
+    public ArrayList<Agent> getAgents(){
+        ArrayList<Agent> agents = new ArrayList<>();
+        for (EnvironmentElement element : elements){
+            if (element instanceof Agent){
+                agents.add((Agent)element);
+            }
+        }
+        return agents;
+    }
+
     public ArrayList<Treasure> getTreasures(){
         ArrayList<Treasure> obstacles = null;
         for (EnvironmentElement element : elements){

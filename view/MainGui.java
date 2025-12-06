@@ -2,10 +2,7 @@ package view;
 
 import config.GameConfig;
 import data.Environment;
-import engine.EnvironmentManager;
-import engine.AgentManager;
-import engine.GameBuilder;
-import engine.Utility;
+import engine.*;
 
 import java.awt.BorderLayout;
 import java.awt.Container;

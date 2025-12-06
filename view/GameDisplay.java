@@ -35,11 +35,8 @@ public class GameDisplay extends JPanel {
         paintStrategy.paint(map, g);
 
 
-
-
         for (AgentManager agentManager : manager.getExplorerManagers()){
             Agent agent = agentManager.getAgent();
-
             paintStrategy.paint(agent, g);
 
         }

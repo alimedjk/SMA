@@ -155,7 +155,6 @@ public class PaintStrategy {
     }
 
 
-
     /**
      *
      *@brief This method allows to draw an obstacle on the canvas.

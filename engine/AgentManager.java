@@ -11,10 +11,6 @@ public class AgentManager extends Thread {
     private Treasure treasure;
 
 
-
-    /**
-     * The train departs from the start point.
-     */
     private boolean running = true;
 
     public AgentManager(Agent agent, Environment environment, EnvironmentManager environmentManager) {
@@ -38,7 +34,7 @@ public class AgentManager extends Thread {
             // Vérifiez si l'explorateur est mort après le mouvement
             if (agent.getHealth() <= 0) {
                 System.out.println("L'explorateur est mort.");
-                ExplorerFactory.setExplorer(agent); // Reset de la position
+                ExplorerFactory.setExplorer(agent, environment); // Reset de la position
             }
         }
     }

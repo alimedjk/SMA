@@ -14,33 +14,50 @@ public class GameBuilder {
     public static Environment initMapElements(){
         Environment environment = new Environment(GameConfig.LINE_COUNT, GameConfig.COLUMN_COUNT);
 
-        environment = generateRandomTreasures(10, environment);
+        generateRandomTreasures(10, environment);
 
         environment.addElements(initObstacles(10, environment));
 
 
-        environment.addElements(initAnimals(20, environment));
+        environment.addElements(initAnimals(GameConfig.NB_ANIMALS, environment));
 
 
         return environment;
 
     }
-    public static Block generateExplorerPosition(){
+    public static Block generateExplorerPosition(int type, Environment environment){
         // Générer une ligne aléatoire (0 à 3)
-        int line = Utility.getRandomNumber(0, 4);
+        int line = Utility.getRandomNumber(0, 3);
 
         // Générer une colonne en fonction de la ligne
         int column;
         if (line % 2 == 0) {
             // Lignes paires (0 et 2)
-            column = (Utility.getRandomNumber(0,1) == 1) ? 1 : 3;
+            column = (Utility.getRandomNumber(0, 1) == 1) ? 1 : 3;
         } else {
             // Lignes impaires (1 et 3)
-            column = (Utility.getRandomNumber(0,1) == 1) ? 0 : 2;
+            column = (Utility.getRandomNumber(0, 1) == 1) ? 0 : 2;
         }
-        return new Block(line, column);
+        if (type != Agent.COMMUNICATIVE_AGENT){
+            return new Block(line, column);
+        }
+        int zone = getZone(environment);
+        System.out.println("zone : " + zone);
+        int ro = (zone / 4) * 4;
+        int col = ((zone % 4) ) * 4;
+        return new Block(ro + line, col + column);
+
     }
-    public static ArrayList<AgentManager> buildInitMobile(Environment environment, EnvironmentManager environmentManager) {
+
+    private static int getZone(Environment environment) {
+        ArrayList<Integer> zoneLibres = Utility.getZoneLibre(environment);
+        System.out.println("zone libres " + zoneLibres);
+        int indexZoneLibre = Utility.getRandomNumber(1, zoneLibres.size()-1);
+        return zoneLibres.get(indexZoneLibre);
+    }
+
+
+        public static ArrayList<AgentManager> buildInitMobile(Environment environment, EnvironmentManager environmentManager) {
 
 //        intializeExplorer(environment, manager);
 
@@ -65,14 +82,14 @@ public class GameBuilder {
         for (int i = 0; i < nbExplorerManagers; i++) {
             Agent agent = ExplorerFactory.constructExplorer(type);
 
-            agent.setBlock(generateExplorerPosition());
-
+            agent.setBlock(generateExplorerPosition(type, environment));
+            environment.addElement(agent);
             managers.add(new AgentManager(agent, environment, environmentManager));
         }
         return managers;
     }
 
-    public static Environment generateRandomTreasures(int nbTreasures, Environment environment) {
+    public static void generateRandomTreasures(int nbTreasures, Environment environment) {
         int line, column;
         for(int i = 0; i < nbTreasures; i++) {
             do {
@@ -89,7 +106,6 @@ public class GameBuilder {
 //                environment.addElement((Treasure)StaticElementFactory.createStaticElement(
 //                        StaticElementFactory.TREASURE, position));
         }
-        return environment;
     }
 
     public static ArrayList<EnvironmentElement> initObstacles(int nbSlowingDownObstacles, Environment map){
@@ -116,7 +132,7 @@ public class GameBuilder {
     }
 
     public static ArrayList<EnvironmentElement> initAnimals(int nbSlowingDownAnimals, Environment map){
-        ArrayList<EnvironmentElement> animals = new ArrayList<EnvironmentElement>();
+        ArrayList<EnvironmentElement> animals = new ArrayList<>();
         int column, line, i;
         Block animalPosition;
         for(i = 0; i<nbSlowingDownAnimals; i++) {
@@ -124,8 +140,7 @@ public class GameBuilder {
                 column = Utility.getRandomNumber(1, map.getColumnCount());
                 line = Utility.getRandomNumber(1, map.getLineCount());
                 animalPosition = new Block(line, column);
-            }while(!(Utility.getEnvironmentElementFromPosition(map, animalPosition) instanceof Treasure)
-            		&& Utility.getEnvironmentElementFromPosition(map, animalPosition) != null
+            }while(Utility.getEnvironmentElementFromPosition(map, animalPosition) != null
                     || ((column / 4 == 0) && (line / 4 == 0)));
 
             Animal animal =new Animal(new Block(line, column));

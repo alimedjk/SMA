@@ -1,9 +1,6 @@
 package engine;
 
-import data.Agent;
-import data.CognitiveAgent;
-import data.CommunicatingAgent;
-import data.ReactiveAgent;
+import data.*;
 
 public class ExplorerFactory {
 
@@ -25,8 +22,8 @@ public class ExplorerFactory {
         return agent;
     }
 
-    public static Agent setExplorer(Agent agent) {
-        agent.setBlock(GameBuilder.generateExplorerPosition());
+    public static Agent setExplorer(Agent agent, Environment environment) {
+        agent.setBlock(GameBuilder.generateExplorerPosition(agent.getTypeAgent(), environment));
 
         return agent;
     }

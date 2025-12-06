@@ -45,6 +45,7 @@ public abstract class Agent extends EnvironmentElement {
                 "position=(" + (getBlock() != null ? getBlock().getLine() + ", " + getBlock().getColumn() : "N/A") + ")" +
                 ", health=" + health +
                 ", strength=" + strength +
+                "type=" + getTypeAgent()+
                 '}';
     }
 
