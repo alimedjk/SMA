@@ -38,9 +38,11 @@ public class GameBuilder {
             // Lignes impaires (1 et 3)
             column = (Utility.getRandomNumber(0, 1) == 1) ? 0 : 2;
         }
+
         if (type != Agent.COMMUNICATIVE_AGENT){
             return new Block(line, column);
         }
+
         int zone = getZone(environment);
         System.out.println("zone : " + zone);
         int ro = (zone / 4) * 4;
@@ -78,9 +80,18 @@ public class GameBuilder {
     public static ArrayList<AgentManager> generateExplorerManagers(Environment environment, EnvironmentManager environmentManager, int nbExplorerManagers, int type){
 
         ArrayList<AgentManager> managers = new ArrayList<AgentManager>();
-
+        int middle = nbExplorerManagers / 2;
         for (int i = 0; i < nbExplorerManagers; i++) {
-            Agent agent = ExplorerFactory.constructExplorer(type);
+            Agent agent = null;
+            if(type == Agent.COGNITIVE_AGENT){
+                if(i < middle){
+                    agent = ExplorerFactory.constructExplorerCognitif(type, 1);
+                }else {
+                    agent = ExplorerFactory.constructExplorerCognitif(type, 2);
+                }
+            }else{
+                 agent = ExplorerFactory.constructExplorer(type);
+            }
 
             agent.setBlock(generateExplorerPosition(type, environment));
             environment.addElement(agent);

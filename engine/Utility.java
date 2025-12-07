@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Utility {
@@ -37,12 +38,16 @@ public class Utility {
      * @return a random number.
      */
     public static int getRandomNumber(int min, int max) {
-        long seed = System.currentTimeMillis();
+        /*long seed = System.currentTimeMillis();
         Random random = new Random(seed);
         int randomNumber = random.nextInt(max - min) + min;
 
 
         return (int) (Math.random() * (max + 1 - min)) + min;
+
+         */
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
+
 
 //        return randomNumber;
     }
@@ -65,13 +70,14 @@ public class Utility {
 //            elements = new ArrayList<>(environment.getElements()); // Copie pour éviter les modifications concurrentes
 //        }
 
-        for(EnvironmentElement environmentElement : environment.getElements()){
+        ArrayList<EnvironmentElement> elements = new ArrayList<>(environment.getElements());
 
-            if(searchedBlock.equals(environmentElement.getBlock())) {
-                return environmentElement;
+        for (EnvironmentElement envElem : elements) {
+            if (searchedBlock.equals(envElem.getBlock())) {
+                return envElem;
             }
-
         }
+
 
         return null;
     }

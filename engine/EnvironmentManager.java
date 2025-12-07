@@ -1,5 +1,8 @@
 package engine;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import data.*;
@@ -25,6 +28,10 @@ public class EnvironmentManager {
     private AtomicInteger nbCollectedTreasures = new AtomicInteger(0);
     private AtomicInteger nbCombats = new AtomicInteger(0);
 
+    private AtomicInteger nbAnimalsDead = new AtomicInteger(0);
+    private AtomicInteger nbAgentDead = new AtomicInteger(0);
+    Set<Integer> nbZoneExplored = new ConcurrentSkipListSet<>();
+
     public EnvironmentManager(Environment environment) {
         this.environment = environment;
         this.agents = new ArrayList<>();
@@ -39,6 +46,19 @@ public class EnvironmentManager {
     public void addAffectedTreasure(Treasure treasure) {
         affectedTreasures.add(treasure);
     }
+
+    public void setPaused(boolean p) {
+        for (AgentManager em : agentManagers) {
+            em.setPaused(p);
+        }
+    }
+
+    public void stopAll() {
+        for (AgentManager em : agentManagers) {
+            em.stopThread();
+        }
+    }
+
 
     public void fight(Agent agent, Animal animal) {
         Random random = new Random();
@@ -116,5 +136,26 @@ public class EnvironmentManager {
     }
     public void increaseNbCombats(){
         nbCombats.incrementAndGet();
+    }
+
+    public int getNbAnimalsDead() {
+        return nbAnimalsDead.get();
+    }
+    public void increaseNbAnimalsDead(){
+        nbAnimalsDead.incrementAndGet();
+    }
+
+    public int getNbAgentDead() {
+        return nbAgentDead.get();
+    }
+    public void increaseNbAgentDead(){
+        nbAgentDead.incrementAndGet();
+    }
+
+    public Set<Integer> getNbZoneExplored() {
+        return nbZoneExplored;
+    }
+    public void increaseNbZoneExplored(int id){
+        nbZoneExplored.add(id);
     }
 }
