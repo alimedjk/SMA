@@ -1,9 +1,9 @@
 # Mini Projet : Equipe Hybride d’Explorateurs
 
-### Date de réalisation : 08/12/2024
-### Année universitaire : 2024-2025
+### Date de réalisation : 07/12/2025
+### Année universitaire : 2025-2026
 ### Établissement : CY Cergy Paris Université
-### Membres du groupe : Lila ROUAS /Lina BENHAMMOUDA / Omar CHAKER /
+### Membres du groupe : Abdelmadjid Benallegue / Adam Lazib / Kotokpo Josué / Ali Medjkoune
 
 - L'objectif est de simuler une exploration en équipe dans un environnement où des explorateurs recherchent des trésors.
 - Ce Mini projet est réalisé dans le cadre d'un atelier SMA (M2-IISC) encadré par M. Tianxio LIU (Tianxiao.Liu@cyu.fr).
@@ -11,15 +11,7 @@
 
 ## Règles des explorateurs:
 
-- Les explorateurs se déplacent de manière randomisée à l’intérieur des limites de la carte (horizontale et verticale).
 
-- Lorsqu’un obstacle est détecté, l’explorateur adapte son itinéraire pour le contourner.
-
-- Si un explorateur croise un animal, deux scénarios peuvent se produire :
-a. Évitement : L’explorateur tente d’éviter l’animal avec une probabilité donnée.
-b. Combat : Si l’évitement échoue ou si l’explorateur est forcé de combattre, un affrontement démarre.
-- Si un agent communicatif trouve un trésor, celui-ci est marqué comme découvert.
-- Les agents cognitifs et réactifs sont autorisés à collecter les trésors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Exemple de configuration :
