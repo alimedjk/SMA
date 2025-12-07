@@ -23,7 +23,7 @@ public class PaintStrategy {
     public void paint(Environment map, Graphics graphics) {
         int blockSize = GameConfig.BLOCK_SIZE;
         Block[][] blocks = map.getBlocks();
-        ArrayList<EnvironmentElement> elements = map.getElements();
+        ArrayList<EnvironmentElement> elements = new ArrayList<>(map.getElements());
 
 
         for (int lineIndex = 0; lineIndex < map.getLineCount(); lineIndex++) {
@@ -31,7 +31,7 @@ public class PaintStrategy {
                 Block block = blocks[lineIndex][columnIndex];
 
                 if ((lineIndex < 4) && (columnIndex < 4)) {
-                    graphics.setColor(new Color(210, 105, 30)); // Marron orangé
+                    graphics.setColor(new Color(184, 134, 11));
 
                     graphics.fillRect(block.getColumn() * blockSize, block.getLine() * blockSize, blockSize, blockSize);
                     if ((lineIndex+columnIndex) % 4 == 1){
@@ -50,7 +50,7 @@ public class PaintStrategy {
                     }
                 }
                 else {
-                    graphics.setColor(new Color(85, 107, 47)); // Vert gazon
+                    graphics.setColor(new Color(210, 180, 140));
 
                     graphics.fillRect(block.getColumn() * blockSize, block.getLine() * blockSize, blockSize, blockSize);
 

@@ -14,6 +14,8 @@ public class AgentManager extends Thread {
     private EnvironmentManager environmentManager;
     protected Treasure treasure;
 
+    private volatile boolean paused = false;
+    private volatile boolean stopped = false;
 
     private boolean running = true;
 
@@ -30,7 +32,15 @@ public class AgentManager extends Thread {
     @Override
     public void run() {
 
-        while (running) {
+        while (!stopped) {
+
+            while (paused && !stopped) {
+                try {
+                    Thread.sleep(30);
+                } catch (InterruptedException ignored) {}
+            }
+            if (stopped) break;
+
             Utility.unitTime();
             Utility.unitTime();
             agent.process(treasure, environmentManager, environment);
@@ -50,5 +60,13 @@ public class AgentManager extends Thread {
 
     public void setTreasure(Treasure treasure){
         this.treasure = treasure;
+    }
+
+    public void setPaused(boolean p) {
+        this.paused = p;
+    }
+
+    public void stopThread() {
+        this.stopped = true;
     }
 }

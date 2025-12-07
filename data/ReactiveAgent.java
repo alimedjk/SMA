@@ -1,7 +1,10 @@
 package data;
 
+import engine.AgentManager;
 import engine.EnvironmentManager;
 import engine.Utility;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ReactiveAgent extends Agent {
 
@@ -14,11 +17,86 @@ public class ReactiveAgent extends Agent {
 
     @Override
     public void process(Treasure treasure, EnvironmentManager environmentManager, Environment environment) {
-        randomMove(environmentManager, environment);
+        int zone = (block.getLine() / 4) * 4 + (block.getColumn() / 4);
+        if(zone != 0 ) {
+            environmentManager.increaseNbZoneExplored(zone);
+        }
+        if (treasure != null) {
+            inform(treasure); // Transmet les positions au cognitif
+            moveToTreasure(treasure, environmentManager, environment);
+        } else {
+            randomMove(environmentManager, environment);
+        }
     }
 
     public int getTypeAgent() {
         return Agent.REACTIVE_AGENT;
+    }
+
+    private void inform(Treasure treasure) {
+        System.out.println("Réactif a reçu les positions des trésors : " + treasure.getBlock());
+    }
+
+    public void moveToTreasure(Treasure treasure, EnvironmentManager environmentManager, Environment environment) {
+        if (treasure.isCollected()){
+//            goToQG();
+            for(AgentManager ag : environmentManager.getExplorerManagers()){
+                if(this.equals(ag.getAgent())){
+                    ag.setTreasure(null);
+                    break;
+                }
+            }
+        }
+
+        if (treasure == null) {
+            System.out.println("Aucun trésor assigné.");
+            return;
+        }
+
+        // Récupérer les coordonnées du trésor
+        int treasureLine = treasure.getBlock().getLine();
+        int treasureColumn = treasure.getBlock().getColumn();
+
+        // Coordonnées actuelles de l'explorateur
+        int currentLine = this.getBlock().getLine();
+        int currentColumn = this.getBlock().getColumn();
+
+        // Boucle de déplacement vers le trésor
+        if (currentLine != treasureLine || currentColumn != treasureColumn) {
+//            System.out.println("Explorateur à (" + currentLine + ", " + currentColumn + ")");
+//            System.out.println("Trésor à (" + treasureLine + ", " + treasureColumn + ")");
+
+            // Calcul du prochain mouvement
+            if (currentLine < treasureLine) {
+                currentLine++; // Avancer vers le bas
+            } else if (currentLine > treasureLine) {
+                currentLine--; // Avancer vers le haut
+            } else if (currentColumn < treasureColumn) {
+                currentColumn++; // Avancer vers la droite
+            } else if (currentColumn > treasureColumn) {
+                currentColumn--; // Avancer vers la gauche
+            }
+
+            // Vérification des obstacles avant de déplacer
+            Block nextBlock = environment.getBlock(currentLine, currentColumn);
+            if (Utility.isObstacleByBlock(nextBlock, environment)) {
+                System.out.println("Obstacle détecté à la position (" + currentLine + ", " + currentColumn + "). Mouvement annulé.");
+                randomMove(environmentManager, environment);
+            }
+            else {
+                // Mettre à jour la position de l'explorateur
+                updatePosition(currentColumn, currentLine);
+            }
+        }
+
+        // Vérifier si l'explorateur atteint le trésor
+        if (currentLine == treasureLine && currentColumn == treasureColumn) {
+            System.out.println("Explorateur a atteint le trésor !");
+            treasure.collect(); // Collecter le trésor
+            environmentManager.increaseNbCollectedTreasures();
+            environment.getElements().remove(treasure); // Supprimer le trésor de l'environnement
+            environment.getElementsByBlocks().remove(treasure.getBlock());
+        }
     }
 
     private void randomMove(EnvironmentManager environmentManager, Environment environment) {
@@ -82,11 +160,13 @@ public class ReactiveAgent extends Agent {
                     // Vérifiez si l'explorateur est mort après le combat
                     if (this.getHealth() <= 0) {
                         System.out.println("L'explorateur est mort après le combat.");
+                        environmentManager.increaseNbAgentDead();
                         return; // Stoppe l'exécution de la méthode
                     }
 
                     // Vérifiez si l'animal est mort
                     if (animal.getHealth() <= 0) {
+                        environmentManager.increaseNbAnimalsDead();
                         System.out.println("L'animal est mort après le combat.");
                     }
                 }
